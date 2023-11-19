@@ -1,0 +1,37 @@
+﻿@model IEnumerable<DoctorAppointmentSystem.Models.Specialist>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SpecialistName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.SpecialistName)
+    </td>
+    @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.SpecialistID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.SpecialistID })
+        </td>*@
+    <td>
+        <a href="/Specialists/Edit?id=@item.SpecialistID" class="btn btn-sm btn-warning">Edit</a>|
+        <a href="/Specialists/Details?id=@item.SpecialistID" class="btn btn-sm btn-warning">Details</a>|
+        <a href="/Specialists/Delete?id=@item.SpecialistID" class="btn btn-sm btn-danger" onclick="return confirm('Are You Sure to Delete this Specialist?')">Delete</a>
+    </td>
+</tr>
+}
+
+</table>

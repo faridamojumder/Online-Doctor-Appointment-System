@@ -1,0 +1,138 @@
+﻿@model DoctorAppointmentSystem.Models.Doctor
+@{
+    ViewBag.Title = "Single";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var listMessage = ViewData["List"] as List<DoctorAppointmentSystem.Models.Doctor>;
+    var ScheduleDate = Model.ScheduleDate == null ? "" : Convert.ToDateTime(Model.ScheduleDate).ToString("yyyy-MM-dd");
+   
+}
+
+<h2>Single Page Appclication With Razor Ajax</h2>
+
+@using (Ajax.BeginForm(
+        "Single",
+        "Home",
+        new AjaxOptions
+        {
+            OnSuccess = "OnSuccess",
+            OnFailure = "OnFailure",
+            LoadingElementId = "progress",
+            HttpMethod = "POST"
+        },
+        new { enctype = "multipart/form-data" }
+    ))
+{
+    @*@Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.DoctorID)
+
+        @Html.LabelFor(m => m.DoctorName)
+        @Html.TextBoxFor(m => m.DoctorName)
+        <br />
+        <label>Image URL</label>
+            <input type="file" name="img" />
+        <br />
+        @Html.LabelFor(m => m.SpecialistID)
+        @Html.DropDownList("SpecialistID")
+        <br />
+        <label>Gender</label>
+        <input type="radio" name="Male" value="1" @rad1 />
+        <input type="radio" name="Female" value="2" @rad2 />
+        <br />
+            <label>Date</label>
+            <input type="date" name="ScheduleDate" value="@ScheduleDate" />
+            <br />*@
+    @*<input type="submit" class="btn btn-primary" value="Save" />*@
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.DoctorID)
+
+    <div class="form-horizontal">
+        <h4>Doctor</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.DoctorName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DoctorName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DoctorName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ScheduleDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ScheduleDate,"Date", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ScheduleDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                Male
+                @Html.RadioButtonFor(model => model.Gender, "Male", new { htmlAttributes = new { @class = "form-control" } })
+                Female
+                @Html.RadioButtonFor(model => model.Gender, "Female", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Prescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="img" />
+                @Html.ValidationMessageFor(model => model.Prescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalPatient, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TotalPatient, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TotalPatient, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Specialist.SpecialistName, "SpecialistID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("SpecialistID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Specialist.SpecialistName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<table class="table table-striped">
+    <tr>
+        <th>DoctorName</th>
+        <th>ScheduleDate</th>
+        <th>Gender</th>
+        <th>Prescription</th>
+        <th>TotalPatient</th>
+        <th>Specialist</th>
+        <th>#</th>
+        <th>#</th>
+    </tr>
+    @foreach (var item in listMessage)
+    {
+<tr>
+    <td>@item.DoctorName</td>
+    <td>@item.ScheduleDate</td>
+    <td>@item.Gender</td>
+    <td><img src="@item.Prescription" width="100"></td>
+    <td>@item.TotalPatient</td>
+    @*<td>@item.SpecialistID</td>*@
+    <td>@Html.DisplayFor(model => item.Specialist.SpecialistName)</td>
+    <td><a href="/Home/Single?id=@item.DoctorID">Edit</a></td>
+    <td><a href="/Home/Delete?id=@item.DoctorID" onclick="return confirm('Are you sure to delete?')">Delete</a></td>
+</tr>
+    }
+</table>
+
